@@ -1,73 +1,25 @@
 public class PalindromeCheckerApp {
 
-    // Node class for singly linked list
-    static class Node {
-        char data;
-        Node next;
+    // Recursive method
+    static boolean isPalindrome(String str, int start, int end) {
 
-        Node(char data) {
-            this.data = data;
-            this.next = null;
-        }
+        // Base condition
+        if(start >= end)
+            return true;
+
+        // Check characters
+        if(str.charAt(start) != str.charAt(end))
+            return false;
+
+        // Recursive call
+        return isPalindrome(str, start + 1, end - 1);
     }
 
     public static void main(String[] args) {
 
-        String text = "madam";
+        String text = "level";
 
-        // Convert string to linked list
-        Node head = null, tail = null;
-
-        for(char c : text.toCharArray()) {
-            Node newNode = new Node(c);
-
-            if(head == null) {
-                head = tail = newNode;
-            } else {
-                tail.next = newNode;
-                tail = newNode;
-            }
-        }
-
-        // Find middle using fast & slow pointer
-        Node slow = head;
-        Node fast = head;
-
-        while(fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        // Reverse second half
-        Node prev = null;
-        Node current = slow;
-
-        while(current != null) {
-            Node next = current.next;
-            current.next = prev;
-            prev = current;
-            current = next;
-        }
-
-        // Compare halves
-        Node first = head;
-        Node second = prev;
-
-        boolean isPalindrome = true;
-
-        while(second != null) {
-
-            if(first.data != second.data) {
-                isPalindrome = false;
-                break;
-            }
-
-            first = first.next;
-            second = second.next;
-        }
-
-        // Result
-        if(isPalindrome)
+        if(isPalindrome(text, 0, text.length() - 1))
             System.out.println(text + " is a Palindrome");
         else
             System.out.println(text + " is NOT a Palindrome");
