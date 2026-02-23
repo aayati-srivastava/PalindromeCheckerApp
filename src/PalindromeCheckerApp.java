@@ -5,25 +5,25 @@ public class PalindromeCheckerApp {
     public static void main(String[] args) {
 
         // Input string
-        String text = "level";
+        String text = "racecar";
 
-        // Create Queue and Stack
-        Queue<Character> queue = new LinkedList<>();
-        Stack<Character> stack = new Stack<>();
+        // Create Deque
+        Deque<Character> deque = new ArrayDeque<>();
 
-        // Insert characters into both structures
+        // Insert characters
         for(int i = 0; i < text.length(); i++) {
-            char ch = text.charAt(i);
-            queue.add(ch);   // enqueue
-            stack.push(ch);  // push
+            deque.addLast(text.charAt(i));
         }
 
         boolean isPalindrome = true;
 
-        // Compare dequeue vs pop
-        for(int i = 0; i < text.length(); i++) {
+        // Compare front and rear
+        while(deque.size() > 1) {
 
-            if(queue.remove() != stack.pop()) {
+            char front = deque.removeFirst();
+            char rear  = deque.removeLast();
+
+            if(front != rear) {
                 isPalindrome = false;
                 break;
             }
