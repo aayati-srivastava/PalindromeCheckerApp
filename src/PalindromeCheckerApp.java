@@ -1,32 +1,69 @@
-import java.util.*;
-
 public class PalindromeCheckerApp {
+
+    // Node class for singly linked list
+    static class Node {
+        char data;
+        Node next;
+
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
 
     public static void main(String[] args) {
 
-        // Input string
-        String text = "racecar";
+        String text = "madam";
 
-        // Create Deque
-        Deque<Character> deque = new ArrayDeque<>();
+        // Convert string to linked list
+        Node head = null, tail = null;
 
-        // Insert characters
-        for(int i = 0; i < text.length(); i++) {
-            deque.addLast(text.charAt(i));
+        for(char c : text.toCharArray()) {
+            Node newNode = new Node(c);
+
+            if(head == null) {
+                head = tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
+            }
         }
+
+        // Find middle using fast & slow pointer
+        Node slow = head;
+        Node fast = head;
+
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Reverse second half
+        Node prev = null;
+        Node current = slow;
+
+        while(current != null) {
+            Node next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        // Compare halves
+        Node first = head;
+        Node second = prev;
 
         boolean isPalindrome = true;
 
-        // Compare front and rear
-        while(deque.size() > 1) {
+        while(second != null) {
 
-            char front = deque.removeFirst();
-            char rear  = deque.removeLast();
-
-            if(front != rear) {
+            if(first.data != second.data) {
                 isPalindrome = false;
                 break;
             }
+
+            first = first.next;
+            second = second.next;
         }
 
         // Result
