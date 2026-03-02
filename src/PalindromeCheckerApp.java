@@ -2,32 +2,48 @@ public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        String text = "A man a plan a canal Panama";
+        String text = "madam";
 
-        // Normalize string
-        text = text.replaceAll("\\s+", "").toLowerCase();
+        // choose strategy
+        String strategy = "STACK";   // change to DEQUE to switch logic
 
         boolean isPalindrome = true;
 
-        int start = 0;
-        int end = text.length() - 1;
+        if(strategy.equals("STACK")) {
 
-        // Compare characters
-        while(start < end) {
+            java.util.Stack<Character> stack = new java.util.Stack<>();
 
-            if(text.charAt(start) != text.charAt(end)) {
-                isPalindrome = false;
-                break;
+            for(char c : text.toCharArray())
+                stack.push(c);
+
+            for(int i = 0; i < text.length(); i++) {
+                if(text.charAt(i) != stack.pop()) {
+                    isPalindrome = false;
+                    break;
+                }
             }
+        }
 
-            start++;
-            end--;
+        else {
+
+            java.util.Deque<Character> deque = new java.util.ArrayDeque<>();
+
+            for(char c : text.toCharArray())
+                deque.addLast(c);
+
+            while(deque.size() > 1) {
+
+                if(deque.removeFirst() != deque.removeLast()) {
+                    isPalindrome = false;
+                    break;
+                }
+            }
         }
 
         // Result
         if(isPalindrome)
-            System.out.println("Palindrome");
+            System.out.println("Palindrome using " + strategy + " strategy");
         else
-            System.out.println("Not a Palindrome");
+            System.out.println("Not a Palindrome using " + strategy + " strategy");
     }
 }
