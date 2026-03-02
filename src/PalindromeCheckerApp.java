@@ -2,48 +2,66 @@ public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        String text = "madam";
+        String text = "A man a plan a canal Panama";
 
-        // choose strategy
-        String strategy = "STACK";   // change to DEQUE to switch logic
+        // Normalize string
+        text = text.replaceAll("\\s+", "").toLowerCase();
 
-        boolean isPalindrome = true;
 
-        if(strategy.equals("STACK")) {
+        // ---------- Algorithm 1 : Two Pointer ----------
+        long start1 = System.nanoTime();
 
-            java.util.Stack<Character> stack = new java.util.Stack<>();
+        boolean result1 = true;
+        int left = 0;
+        int right = text.length() - 1;
 
-            for(char c : text.toCharArray())
-                stack.push(c);
+        while(left < right) {
+            if(text.charAt(left) != text.charAt(right)) {
+                result1 = false;
+                break;
+            }
+            left++;
+            right--;
+        }
 
-            for(int i = 0; i < text.length(); i++) {
-                if(text.charAt(i) != stack.pop()) {
-                    isPalindrome = false;
-                    break;
-                }
+        long end1 = System.nanoTime();
+
+
+        // ---------- Algorithm 2 : Reverse String ----------
+        long start2 = System.nanoTime();
+
+        String reversed = "";
+        for(int i = text.length() - 1; i >= 0; i--)
+            reversed += text.charAt(i);
+
+        boolean result2 = text.equals(reversed);
+
+        long end2 = System.nanoTime();
+
+
+        // ---------- Algorithm 3 : Stack ----------
+        long start3 = System.nanoTime();
+
+        java.util.Stack<Character> stack = new java.util.Stack<>();
+
+        for(char c : text.toCharArray())
+            stack.push(c);
+
+        boolean result3 = true;
+
+        for(int i = 0; i < text.length(); i++) {
+            if(text.charAt(i) != stack.pop()) {
+                result3 = false;
+                break;
             }
         }
 
-        else {
+        long end3 = System.nanoTime();
 
-            java.util.Deque<Character> deque = new java.util.ArrayDeque<>();
 
-            for(char c : text.toCharArray())
-                deque.addLast(c);
-
-            while(deque.size() > 1) {
-
-                if(deque.removeFirst() != deque.removeLast()) {
-                    isPalindrome = false;
-                    break;
-                }
-            }
-        }
-
-        // Result
-        if(isPalindrome)
-            System.out.println("Palindrome using " + strategy + " strategy");
-        else
-            System.out.println("Not a Palindrome using " + strategy + " strategy");
+        // ---------- Results ----------
+        System.out.println("Two Pointer Result: " + result1 + " Time: " + (end1-start1));
+        System.out.println("Reverse String Result: " + result2 + " Time: " + (end2-start2));
+        System.out.println("Stack Result: " + result3 + " Time: " + (end3-start3));
     }
 }
